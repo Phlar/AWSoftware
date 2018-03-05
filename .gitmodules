@@ -1,0 +1,3 @@
+[submodule "AWCMake"]
+	path = AWCMake
+	url = git@github.com:Phlar/AWCMake.git
