@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <list>
 #include <memory>
+#include <shared_mutex>
 
 #include "base.module/IModule.hpp"
 
@@ -11,7 +12,6 @@
 namespace aw {
 namespace base {
 
-// Todo: Add thread safety.
 // Well, this one most likely will be a singleton...
 class ModuleProvider final {
 
@@ -34,6 +34,8 @@ class ModuleProvider final {
         IModuleSPtr getModuleInternal(const ModuleUUID& uuid) const;
 
         std::list<IModuleSPtr> m_modules;
+        
+        mutable std::shared_mutex m_accessMutex; // Mutable since const methods still modify the mutex.
 };
 
 } // namespace base
