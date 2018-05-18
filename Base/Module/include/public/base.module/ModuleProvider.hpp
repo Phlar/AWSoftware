@@ -17,10 +17,13 @@ class ModuleProvider final {
 
     public:
 
-        ModuleProvider() = default;
-        ~ModuleProvider() = default;
-
+        ModuleProvider();
         ModuleProvider(const std::list<IModuleSPtr>&);
+       
+        virtual ~ModuleProvider();
+    
+        ModuleProvider(const ModuleProvider&) = delete;
+        ModuleProvider& operator=(const ModuleProvider&) = delete;    
 
         void addModule(IModuleSPtr);
         IModuleSPtr getModule(const ModuleUUID&) const;
