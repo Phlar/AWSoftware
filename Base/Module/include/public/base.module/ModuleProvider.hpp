@@ -8,7 +8,6 @@
 
 #include "base.module/IModule.hpp"
 
-
 namespace aw {
 namespace base {
 
@@ -17,9 +16,9 @@ class ModuleProvider final {
 
     public:
 
+        using ModuleMapping = std::map<ModuleUUID, IModuleSPtr>;
+
         ModuleProvider();
-        ModuleProvider(const std::list<IModuleSPtr>&);
-       
         virtual ~ModuleProvider();
     
         ModuleProvider(const ModuleProvider&) = delete;
@@ -33,9 +32,8 @@ class ModuleProvider final {
 
         IModuleSPtr getModuleInternal(const ModuleUUID& uuid) const;
 
-        std::map<ModuleUUID, IModuleSPtr> m_modules;
-        
-        mutable std::shared_mutex m_accessMutex; // Mutable since const methods still modify the mutex.
+        ModuleMapping m_modules;
+        mutable std::shared_mutex m_accessMutex;
 };
 
 } // namespace base

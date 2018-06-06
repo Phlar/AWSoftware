@@ -6,15 +6,16 @@
 namespace aw {
 namespace base {
 
-ModuleProvider::ModuleProvider(const std::list<IModuleSPtr>& modules)
+ModuleProvider::ModuleProvider()
 : m_modules()
 , m_accessMutex() {
-    for(auto& module : modules) {
-        addModule(module);
-    }
+}
+
+ModuleProvider::~ModuleProvider() {
 }
 
 void ModuleProvider::addModule(IModuleSPtr module) {
+
     if(!module) {
         throw(std::invalid_argument("Invalid module to register."));
     }
@@ -22,11 +23,12 @@ void ModuleProvider::addModule(IModuleSPtr module) {
     std::unique_lock<std::shared_mutex> uniqueLock(m_accessMutex);
     const auto result(m_modules.insert(std::make_pair(module->getUUID(), module)));
     if(!result.second) {
-        // Todo: Log not being able to add module.
+        // Todo: Log me!
     }
 }
 
 IModuleSPtr ModuleProvider::getModule(const ModuleUUID& uuid) const {
+
     auto module(getModuleInternal(uuid));
     if (!module) {
         // Todo: More meaningful message.
