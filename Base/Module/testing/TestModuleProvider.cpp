@@ -3,26 +3,37 @@
 
 #include <gtest/gtest.h>
 
-#include <boost/regex.hpp>
+// #include "base.module\ModuleProvider.hpp"
+#include "base.module.gmock\MockIModule.hpp"
+
+using namespace testing;
+using namespace aw::base;
 
 
-TEST(MyTest, FooTest) {
+class TestModuleProviderFixture : public Test {
 
-    int i(42);
+    public:
+        TestModuleProviderFixture()
+        //: moduleProvider(nullptr) {
+        {}
 
-    EXPECT_EQ(i, 42);
+        virtual ~TestModuleProviderFixture() {
+        }
+
+        void SetUp() override {
+         //   ASSERT_NO_THROW(moduleProvider = std::make_shared<ModuleProvider>());
+        }
+
+   //     std::shared_ptr<ModuleProvider> moduleProvider;
+};
+
+TEST(TestModuleProvider, TestAddAndGetValidModule) {
+
+//     EXPECT_NO_THROW()
+
+    
 }
 
-TEST(MyTest, BarTest) {
-
-    int i(42);
-
-    EXPECT_NE(i, 42);
-
-    std::string s = "Boost Libraries";
-    boost::regex expr{ "\\w+\\s\\w+" };
-    std::cout << "LALALA: " << std::boolalpha << boost::regex_match(s, expr) << '\n';
-}
 
 int main(int argc, char **argv) {
      testing::InitGoogleTest(&argc, argv);

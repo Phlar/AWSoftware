@@ -37,10 +37,14 @@ target_sources(${targetName_gmock}
 		"${CMAKE_CURRENT_SOURCE_DIR}/gmock/src/public/base.module.gmock/MockIModule.cpp"
 )
 
-target_include_directories(${targetName}
+target_include_directories(${targetName_gmock}
 	PUBLIC
 		 "${CMAKE_CURRENT_SOURCE_DIR}/gmock/include/public/"
+	PRIVATE
+		 "${CMAKE_CURRENT_SOURCE_DIR}/include/public/"
 )
+
+target_link_libraries(${targetName_gmock} gMock_static ${targetName})
 
 setTargetCompileOptions(${targetName_gmock})
 
