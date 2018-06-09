@@ -22,7 +22,7 @@ class ModuleProvider final {
         virtual ~ModuleProvider();
     
         ModuleProvider(const ModuleProvider&) = delete;
-        ModuleProvider& operator=(const ModuleProvider&) = delete;    
+        ModuleProvider& operator=(const ModuleProvider&) = delete;
 
         void addModule(IModuleSPtr);
         IModuleSPtr getModule(const ModuleUUID&) const;

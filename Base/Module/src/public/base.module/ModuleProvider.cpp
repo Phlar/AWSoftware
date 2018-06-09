@@ -29,12 +29,7 @@ void ModuleProvider::addModule(IModuleSPtr module) {
 
 IModuleSPtr ModuleProvider::getModule(const ModuleUUID& uuid) const {
 
-    auto module(getModuleInternal(uuid));
-    if (!module) {
-        // Todo: More meaningful message.
-        throw(std::logic_error("No module found for uuid"));
-    }
-    return module;
+    return getModuleInternal(uuid);
 }
 
 bool ModuleProvider::hasModule(const ModuleUUID& uuid) const {
