@@ -18,10 +18,12 @@ target_sources(${targetName}
 
 target_include_directories(${targetName}
 	PUBLIC
-		 "${CMAKE_CURRENT_SOURCE_DIR}/include/public"
+		"${CMAKE_CURRENT_SOURCE_DIR}/include/public"
+	PRIVATE
+		"${CMAKE_CURRENT_SOURCE_DIR}/include/internal"
 )
 
-target_link_libraries(${targetName} "libMModule" "libCommon")
+target_link_libraries(${targetName} "libModule" "libCommon")
 
 setTargetCompileOptions(${targetName})
 
