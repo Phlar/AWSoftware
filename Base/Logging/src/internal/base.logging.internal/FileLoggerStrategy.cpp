@@ -1,4 +1,4 @@
-#include "base.logging/FileLoggerStrategy.hpp"
+#include "base.logging.internal/FileLoggerStrategy.hpp"
 
 namespace aw {
 namespace base {
