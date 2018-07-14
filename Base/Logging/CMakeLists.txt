@@ -52,4 +52,4 @@ setTargetCompileOptions(${targetName_gmock})
 
 #########################################################
 # The library's tests.	
-# add_subdirectory(testing)
+add_subdirectory(testing)
