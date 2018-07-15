@@ -39,14 +39,14 @@ class ILogger : IModule {
 
 	public:
 	
-		using LogHandler = std::function<const LogLevel&, const std::string&>;
-        using LogHandlerSignal = Signal<typename LogHandler::result_type(typename LogHandler::argument_type)>;
-        using LogHandlerSignalPtr = std::shared_ptr<LogHandlerSignal>;
+		using LogHandler = std::function<void(const LogLevel&, const std::string&)>;
+        using LogHandlerSignal = boost::signals2::signal<void(const LogLevel&, const std::string&)>;
+        using LogHandlerSignalConnection = boost::signals2::connection;
 
 		virtual ~ILogger() {
 		}
 
-		virtual SignalConnection registerLogHandler(LogHandler) = 0;
+		virtual LogHandlerSignalConnection registerLogHandler(LogHandler) = 0;
         virtual void log(const LogLevel&, const std::string&) = 0;
 };
 using ILoggerPtr = std::shared_ptr<ILogger>;

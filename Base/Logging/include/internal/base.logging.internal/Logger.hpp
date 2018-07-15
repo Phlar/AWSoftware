@@ -1,10 +1,16 @@
 #ifndef AWSOFTWARE_BASE_LOGGING_INTERNAL_LOGGER_HPP
 #define AWSOFTWARE_BASE_LOGGING_INTERNAL_LOGGER_HPP
 
+#include <chrono>
 #include <memory>
+#include <mutex>
+#include <queue>
+#include <thread>
+#include <tuple>
 
 #include <boost/signals2.hpp>
 
+#include "base.logging/ILogger.hpp"
 #include "base.module/IModule.hpp"
 
 namespace aw {
@@ -12,7 +18,7 @@ namespace base {
 namespace logging {
 
 template<class T>
-class Logger : IModule {
+class Logger : public ILogger {
 
       public:
 		Logger() = delete;
@@ -54,7 +60,6 @@ class Logger : IModule {
 		virtual ~Logger() {
 
 			if(m_thread) {
-
 				m_exitThread.store(true);
 				m_waitCondition.notify_all();
 				m_thread->join();
@@ -65,7 +70,7 @@ class Logger : IModule {
 			return T::TypeUUID;
         }
 
-        SignalConnection registerLogHandler(LogHandler handler) override {
+        LogHandlerSignalConnection registerLogHandler(LogHandler handler) override {
             return m_signalInvokeLogHandlers.connect(handler);
         }
 
@@ -83,11 +88,10 @@ class Logger : IModule {
     private:
 
 		using LogEntry = std::tuple<
-			  std::chrono::time_point,
+              std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds>,
 			  std::thread::id,
 			  LogLevel,
-			  std::string,
-			  m_signalInvokeLogHandlers>;
+			  std::string>;
 
         std::atomic<bool> m_exitThread;
         std::unique_ptr<std::thread> m_thread;
@@ -95,7 +99,7 @@ class Logger : IModule {
         std::condition_variable m_waitCondition;
 
         std::queue<LogEntry> m_entries;
-		LogHandlerSignalPtr m_logHandlerSignal;
+        LogHandlerSignal m_logHandlerSignal;
 		T m_strategy;
 };
 
