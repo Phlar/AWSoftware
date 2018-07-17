@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.4.3)
 project("AWSoftware" CXX)
 
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS YES CACHE BooL "Export all symbols.")
+add_definitions("-DBOOST_ALL_NO_LIB") # Disable boost's auto-link feature using MSVC.
 
 # This has to happen at the very beginning as it determines system- / build-settings used thoughout the project.
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/AWCMake)
