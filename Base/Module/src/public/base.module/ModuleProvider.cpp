@@ -6,6 +6,28 @@
 namespace aw {
 namespace base {
 
+std::atomic_flag ModuleProvider::m_instanceLock = ATOMIC_FLAG_INIT;
+ModuleProviderWeakPtr ModuleProvider::m_weakInstance = ModuleProviderPtr(nullptr);
+
+
+ModuleProviderPtr ModuleProvider::getInstance() {
+
+    ModuleProviderPtr instance(nullptr);
+
+    // Check / construction should be fast enough so a spin lock should be sufficient here.
+    while (m_instanceLock.test_and_set()) {};  // Spin as long as the flag is not set to 'false'.
+
+    instance = m_weakInstance.lock();
+    if (!instance) {
+        instance = ModuleProviderPtr(new ModuleProvider()); // Can't use make_shared because of visibility.
+        m_weakInstance = instance;
+    }
+
+    m_instanceLock.clear(); // Indicate to stop spinning.
+    return instance;
+}
+
+
 ModuleProvider::ModuleProvider()
 : m_modules()
 , m_accessMutex() {

@@ -25,14 +25,31 @@ class TestModuleProviderFixture : public Test {
         }
 
         void SetUp() override {
-            ASSERT_NO_THROW(moduleProvider = std::make_shared<ModuleProvider>());
+            ASSERT_NO_THROW(moduleProvider = ModuleProvider::getInstance());
         }
 
     MockIModulePtr mockIModuleA;
     MockIModulePtr mockIModuleB;
 
-    std::shared_ptr<ModuleProvider> moduleProvider;
+    ModuleProviderPtr moduleProvider;
 };
+
+
+TEST_F(TestModuleProviderFixture, TestModuleProviderLifetime) {
+
+    ASSERT_TRUE(moduleProvider);
+
+    // There should be only one owner - the fixture.
+    std::weak_ptr<ModuleProvider> weakModuleProvider(moduleProvider);
+    EXPECT_EQ(1, moduleProvider.use_count());
+    EXPECT_EQ(moduleProvider, weakModuleProvider.lock());
+
+    // Release the 'last' strong reference.
+    EXPECT_NO_THROW(moduleProvider.reset());
+
+    // ModuleProvider instance should not be reachable any more.
+    EXPECT_TRUE(weakModuleProvider.expired());
+}
 
 TEST_F(TestModuleProviderFixture, TestAddAndGetValidModule) {
 
