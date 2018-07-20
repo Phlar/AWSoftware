@@ -10,8 +10,8 @@
 
 #include <boost/signals2.hpp>
 
-#include "base.logging/ILogger.hpp"
 #include "base.module/IModule.hpp"
+#include "base.logging/ILogger.hpp"
 
 namespace aw {
 namespace base {
@@ -22,20 +22,24 @@ class Logger : public ILogger {
 
       public:
 		Logger() = delete;
-		Logger(const T& strategy)
+		Logger(std::unique_ptr<T>&& strategy)
 		: m_exitThread(false)
 		, m_thread(nullptr)
 		, m_mutex()
-		, m_waitCondition(),
+		, m_waitCondition()
 		, m_entries()
 		, m_logHandlerSignal()
-		, m_strategy(strategy) {
+		, m_strategy(std::move(strategy)) {
+
+            if(!m_strategy) {
+                throw std::invalid_argument("Error setting up logger, invalid strategy defined.");
+            }
 
 			// Start the logger's thread.
 			m_thread = std::unique_ptr<std::thread>(new std::thread([this](){
 
 				// Prepare the strategy.
-				m_strategy.open();
+				m_strategy->open();
 
 				// Process incoming log-messages.
 				while(!m_exitThread.load()) {
@@ -44,8 +48,9 @@ class Logger : public ILogger {
 					std::unique_lock<std::mutex> uniqueLock(m_mutex);
 
 					while(!m_entries.empty()) {
-						m_strategy.logEntry(m_entries.front());
-						m_entries.pop_front();
+                        const auto loggedEntry(m_strategy->logEntry(m_entries.front()));
+                        m_logHandlerSignal(loggedEntry);
+						m_entries.pop();
 					}
 
 					// No need to protect against spurious wakeups here.
@@ -53,7 +58,7 @@ class Logger : public ILogger {
 				}
 
 				// Let the logging-strategy finish.
-				m_strategy.close();
+				m_strategy->close();
 			}));
 		}
 
@@ -71,27 +76,27 @@ class Logger : public ILogger {
         }
 
         LogHandlerSignalConnection registerLogHandler(LogHandler handler) override {
-            return m_signalInvokeLogHandlers.connect(handler);
+
+            if (!handler) {
+                throw std::invalid_argument("Error registering logging-handler, invalid handler provided.");
+            }
+
+            return m_logHandlerSignal.connect(handler);
         }
 
         void log(const LogLevel& level, const std::string& message) override {
 
-			const auto entry(std::make_tuple(std::chrono::system_clock::now(), std::this_thread::get_id(), level, message));
+            std::chrono::system_clock::time_point g(std::chrono::system_clock::now());
+
+			const LogEntry entry(std::make_tuple(std::chrono::system_clock::now(), std::this_thread::get_id(), level, message));
 			{
 				std::lock_guard<std::mutex> guard(m_mutex);
-				m_entries.push_back(std::move(entry));
+				m_entries.push(std::move(entry));
 			}
-
 			m_waitCondition.notify_all();
 		}
 
     private:
-
-		using LogEntry = std::tuple<
-              std::chrono::time_point<std::chrono::system_clock, std::chrono::milliseconds>,
-			  std::thread::id,
-			  LogLevel,
-			  std::string>;
 
         std::atomic<bool> m_exitThread;
         std::unique_ptr<std::thread> m_thread;
@@ -100,7 +105,7 @@ class Logger : public ILogger {
 
         std::queue<LogEntry> m_entries;
         LogHandlerSignal m_logHandlerSignal;
-		T m_strategy;
+        std::unique_ptr<T> m_strategy;
 };
 
 } // namespace logging

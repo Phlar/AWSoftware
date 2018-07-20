@@ -11,4 +11,4 @@ target_include_directories(${targetName} INTERFACE
 	"${CMAKE_CURRENT_SOURCE_DIR}/include/public/"
 )
 
-target_link_libraries(${targetName} INTERFACE "boost_filesystem_shared")
+# target_link_libraries(${targetName} INTERFACE "boost_filesystem_shared")

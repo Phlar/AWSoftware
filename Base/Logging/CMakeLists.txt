@@ -9,11 +9,13 @@ add_library(${targetName} SHARED "")
 
 target_sources(${targetName}
 	PUBLIC
-		"${CMAKE_CURRENT_SOURCE_DIR}/include/public/base.logging/ILogger.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/public/base.logging/ILogger.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/public/base.logging/LoggerTypes.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/public/base.logging/FileLoggerStrategy.hpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/src/public/base.logging/FileLoggerStrategy.cpp"
+
 	PRIVATE
 		"${CMAKE_CURRENT_SOURCE_DIR}/include/internal/base.logging.internal/Logger.hpp"
-		"${CMAKE_CURRENT_SOURCE_DIR}/include/internal/base.logging.internal/FileLoggerStrategy.hpp"
-		"${CMAKE_CURRENT_SOURCE_DIR}/src/internal/base.logging.internal/FileLoggerStrategy.cpp"
 )
 
 target_include_directories(${targetName}
@@ -23,7 +25,7 @@ target_include_directories(${targetName}
 		"${CMAKE_CURRENT_SOURCE_DIR}/include/internal"
 )
 
-target_link_libraries(${targetName} "libModule" "libCommon")
+target_link_libraries(${targetName} "libModule" "libCommon" "boost_filesystem_shared" "boost_system_shared")
 
 setTargetCompileOptions(${targetName})
 
