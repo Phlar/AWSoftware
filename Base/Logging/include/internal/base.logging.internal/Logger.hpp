@@ -72,7 +72,7 @@ class Logger : public ILogger {
         }
 
         ModuleUUID getUUID() const override {
-			return T::TypeUUID;
+			return ILogger::TypeUUID;
         }
 
         LogHandlerSignalConnection registerLogHandler(LogHandler handler) override {

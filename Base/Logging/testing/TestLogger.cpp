@@ -23,14 +23,11 @@ struct MockLoggedHandler {
 
 struct MockLoggerStrategy {
 
-    static const ModuleUUID TypeUUID;
     MOCK_METHOD0(open, void());
     MOCK_METHOD0(close, void());
     MOCK_METHOD1(logEntry, LoggedEntry(const LogEntry&));
 };
 using MockLoggerStrategyUPtr = std::unique_ptr<MockLoggerStrategy>;
-
-const ModuleUUID MockLoggerStrategy::TypeUUID = ModuleUUID(123);
 
 
 class TestLoggerFixture : public testing::Test {
@@ -73,7 +70,7 @@ TEST_F(TestLoggerFixture, TestGetUUID) {
 
     ASSERT_NO_THROW(createLogger());
     EXPECT_NO_THROW(loggerUUID = logger->getUUID());
-    EXPECT_EQ(loggerUUID, MockLoggerStrategy::TypeUUID);
+    EXPECT_EQ(loggerUUID, ILogger::TypeUUID);
 }
 
 TEST_F(TestLoggerFixture, TestRegisteringInvalidHandlerShouldThrow) {

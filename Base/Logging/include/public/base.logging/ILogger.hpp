@@ -20,6 +20,8 @@ class ILogger : IModule {
 		virtual ~ILogger() {
 		}
 
+        static const ModuleUUID TypeUUID = 5644464;
+
 		virtual LogHandlerSignalConnection registerLogHandler(LogHandler) = 0;
         virtual void log(const LogLevel&, const std::string&) = 0;
 };
