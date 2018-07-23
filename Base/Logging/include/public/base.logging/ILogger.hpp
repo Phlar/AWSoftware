@@ -13,7 +13,7 @@ namespace aw {
 namespace base {
 namespace logging {
 
-class ILogger : IModule {
+class ILogger : public virtual IModule {
 
 	public:
 	

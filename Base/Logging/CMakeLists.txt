@@ -9,6 +9,7 @@ add_library(${targetName} SHARED "")
 
 target_sources(${targetName}
 	PUBLIC
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/public/base.logging/Logging.hpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/include/public/base.logging/ILogger.hpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/include/public/base.logging/LoggerTypes.hpp"
         "${CMAKE_CURRENT_SOURCE_DIR}/include/public/base.logging/FileLoggerStrategy.hpp"
@@ -48,7 +49,7 @@ target_include_directories(${targetName_gmock}
 		 "${CMAKE_CURRENT_SOURCE_DIR}/include/public/"
 )
 
-target_link_libraries(${targetName_gmock} gMock_static ${targetName})
+target_link_libraries(${targetName_gmock} gMock_static libModule_gmock ${targetName})
 
 setTargetCompileOptions(${targetName_gmock})
 
