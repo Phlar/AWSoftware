@@ -12,3 +12,8 @@ target_include_directories(${targetName} INTERFACE
 )
 
 # target_link_libraries(${targetName} INTERFACE "boost_filesystem_shared")
+
+
+#########################################################
+# The library's tests.	
+add_subdirectory(testing)
