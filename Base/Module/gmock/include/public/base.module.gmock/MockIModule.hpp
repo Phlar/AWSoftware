@@ -14,7 +14,7 @@ namespace base {
 class MockIModule;
 using MockIModulePtr = std::shared_ptr<MockIModule>;
 
-class MockIModule : public IModule {
+class MockIModule : public virtual IModule {
 
     public:
 

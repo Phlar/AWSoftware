@@ -16,8 +16,8 @@ class IModule {
 
         virtual ModuleUUID getUUID() const = 0;
 };
-using IModuleSPtr = std::shared_ptr<IModule>;
-using IModuleWPtr = std::weak_ptr<IModule>;
+using IModulePtr = std::shared_ptr<IModule>;
+using IModuleWeakPtr = std::weak_ptr<IModule>;
 
 } // namespace base
 } // namespace aw

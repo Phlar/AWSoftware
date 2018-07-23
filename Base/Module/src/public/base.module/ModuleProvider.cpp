@@ -36,7 +36,7 @@ ModuleProvider::ModuleProvider()
 ModuleProvider::~ModuleProvider() {
 }
 
-void ModuleProvider::addModule(IModuleSPtr module) {
+void ModuleProvider::addModule(IModulePtr module) {
 
     if(!module) {
         throw(std::invalid_argument("Invalid module to register."));
@@ -49,7 +49,7 @@ void ModuleProvider::addModule(IModuleSPtr module) {
     }
 }
 
-IModuleSPtr ModuleProvider::getModule(const ModuleUUID& uuid) const {
+IModulePtr ModuleProvider::getModule(const ModuleUUID& uuid) const {
 
     return getModuleInternal(uuid);
 }
@@ -58,7 +58,7 @@ bool ModuleProvider::hasModule(const ModuleUUID& uuid) const {
     return getModuleInternal(uuid) != nullptr;
 }
 
-IModuleSPtr ModuleProvider::getModuleInternal(const ModuleUUID& uuid) const {
+IModulePtr ModuleProvider::getModuleInternal(const ModuleUUID& uuid) const {
 
     std::shared_lock<std::shared_mutex> sharedLock(m_accessMutex);
     const auto iter(m_modules.find(uuid));

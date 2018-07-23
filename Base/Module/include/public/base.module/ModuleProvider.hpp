@@ -20,7 +20,7 @@ class ModuleProvider final {
 
     public:
 
-        using ModuleMapping = std::map<ModuleUUID, IModuleSPtr>;
+        using ModuleMapping = std::map<ModuleUUID, IModulePtr>;
 
         static ModuleProviderPtr getInstance();
 
@@ -28,15 +28,15 @@ class ModuleProvider final {
         ModuleProvider(const ModuleProvider&) = delete;
         ModuleProvider& operator=(const ModuleProvider&) = delete;
 
-        void addModule(IModuleSPtr);
-        IModuleSPtr getModule(const ModuleUUID&) const;
+        void addModule(IModulePtr);
+        IModulePtr getModule(const ModuleUUID&) const;
         bool hasModule(const ModuleUUID& uuid) const;
 
     private:
 
         ModuleProvider();
 
-        IModuleSPtr getModuleInternal(const ModuleUUID& uuid) const;
+        IModulePtr getModuleInternal(const ModuleUUID& uuid) const;
 
         ModuleMapping m_modules;
         mutable std::shared_mutex m_accessMutex;

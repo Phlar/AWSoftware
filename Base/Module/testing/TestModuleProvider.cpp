@@ -54,7 +54,7 @@ TEST_F(TestModuleProviderFixture, TestModuleProviderLifetime) {
 TEST_F(TestModuleProviderFixture, TestAddAndGetValidModule) {
 
     bool isListed(false);
-    IModuleSPtr listedModule(nullptr);
+    IModulePtr listedModule(nullptr);
 
     // Getters before a module is added...
     EXPECT_NO_THROW(isListed = moduleProvider->hasModule(mockIModuleA->getUUID()));
