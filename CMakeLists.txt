@@ -45,3 +45,4 @@ enable_testing()
 setGlobalLinkerFlags()
 
 add_subdirectory(Base)
+add_subdirectory(SceneGraph)
