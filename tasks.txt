@@ -1,0 +1,15 @@
+
+- Change the ModuleProvider to be a 'owned' singleton.          [DONE]
+- Custom exception classes.
+- ASSERT macro.
+- LOG macro.                                                    [DONE]
+- std::make_unique<>.
+- "Wait for" gmock-macro. (see TestLogger unit-test).
+- boost-signal2 "aliases".
+- Scene-Object
+- Node-Instance /-Occurrence concept
+    - cloning of instances.
+    - conversion of instances to occurrence when adding as a reference.
+    - algorithms / traversers / all paths up to the root.
+    - preparation of visitor support.
+- Target's shall take the parental's directory name into accout. e.g. instead of libCommon -> libBaseCommon
