@@ -14,19 +14,19 @@ class Node;
 using NodePtr = std::shared_ptr<Node>;
 using NodeWeakPtr = std::weak_ptr<Node>;
 
-
-class Node {
-
-    public:
-
-        Node();
-        virtual ~Node();
-
-    protected:
-
-        // std::list<NodeWeakPtr> m_parents;
-        // std::list<NodePtr> m_children;
-};
+//
+//class Node {
+//
+//    public:
+//
+//        Node();
+//        virtual ~Node();
+//
+//    protected:
+//
+//        // std::list<NodeWeakPtr> m_parents;
+//        // std::list<NodePtr> m_children;
+//};
 
 } // namespace internal
 } // namespace base

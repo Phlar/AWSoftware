@@ -6,11 +6,11 @@ namespace scenegraph {
 namespace base {
 namespace internal {
 
-Node::Node() {
-}
-
-Node::~Node() {
-}
+//Node::Node() {
+//}
+//
+//Node::~Node() {
+//}
 
 } // namespace internal
 } // namespace base
