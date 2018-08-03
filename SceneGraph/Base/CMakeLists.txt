@@ -10,11 +10,15 @@ add_library(${targetName} SHARED "")
 target_sources(${targetName}
 	PUBLIC
         "${CMAKE_CURRENT_SOURCE_DIR}/include/public/scenegraph.base/INodeProperty.hpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/include/public/scenegraph.base/NodeInstance.hpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/include/public/scenegraph.base/NodeVisitors.hpp"
 	PRIVATE
-		"${CMAKE_CURRENT_SOURCE_DIR}/include/internal/scenegraph.base.internal/Node.hpp"
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/internal/scenegraph.base.internal/Node.cpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/include/internal/scenegraph.base.internal/INode.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/internal/scenegraph.base.internal/INodeVisitor.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/internal/scenegraph.base.internal/NodeInstance.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/internal/scenegraph.base.internal/NodeOccurrence.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/internal/scenegraph.base.internal/TypedNodeInstance.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/internal/scenegraph.base.internal/TypedNodeOccurrence.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/internal/scenegraph.base.internal/NodeInstance.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/internal/scenegraph.base.internal/NodeOccurrence.cpp"
 )
 
 target_include_directories(${targetName}
