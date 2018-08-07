@@ -28,7 +28,7 @@ target_include_directories(${targetName}
         "${CMAKE_CURRENT_SOURCE_DIR}/include/internal"
 )
 
-target_link_libraries(${targetName} "libModule" "libLogging")
+target_link_libraries(${targetName} "libModule" "libCommon" "libLogging")
 
 setTargetCompileOptions(${targetName})
 
