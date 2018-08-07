@@ -2,7 +2,7 @@
 
 #include <gtest/gtest.h>
 
-#include "base.common\StringUtils.hpp"
+#include "base.common/StringUtils.hpp"
 
 using namespace testing;
 using namespace aw::base::common;

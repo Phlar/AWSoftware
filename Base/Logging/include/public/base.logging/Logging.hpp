@@ -26,14 +26,13 @@ void logMessage(const LogLevel& logLevel, Args&&... args) {
 }
 
 } // namespace detail
-
-#define LOG_ERROR(...) aw::base::logging::detail::logMessage(LogLevel::LOG_LEVEL_ERROR, __VA_ARGS__);
-#define LOG_INFO(...) aw::base::logging::detail::logMessage(LogLevel::LOG_LEVEL_INFO, __VA_ARGS__);
-#define LOG_WARNING(...) aw::base::logging::detail::logMessage(LogLevel::LOG_LEVEL_WARNING, __VA_ARGS__);
-#define LOG_DEBUG(...) aw::base::logging::detail::logMessage(LogLevel::LOG_LEVEL_DEBUG, __VA_ARGS__);
-
 } // namespace logging
 } // namespace base
 } // namespace aw
+
+#define LOG_ERROR(...) aw::base::logging::detail::logMessage(aw::base::logging::LogLevel::LOG_LEVEL_ERROR, __VA_ARGS__);
+#define LOG_INFO(...) aw::base::logging::detail::logMessage(aw::base::logging::LogLevel::LOG_LEVEL_INFO, __VA_ARGS__);
+#define LOG_WARNING(...) aw::base::logging::detail::logMessage(aw::base::logging::LogLevel::LOG_LEVEL_WARNING, __VA_ARGS__);
+#define LOG_DEBUG(...) aw::base::logging::detail::logMessage(aw::base::logging::LogLevel::LOG_LEVEL_DEBUG, __VA_ARGS__);
 
 #endif // AWSOFTWARE_BASE_LOGGING_LOGGING_HPP

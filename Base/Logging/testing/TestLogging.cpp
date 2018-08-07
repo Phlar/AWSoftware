@@ -13,7 +13,6 @@
 
 using namespace testing;
 using namespace aw::base;
-using namespace aw::base::logging;
 
 TEST(TestLogging, TestLoggingMacrosWithoutInstantiatedModuleProvider) {
 
@@ -36,7 +35,7 @@ TEST(TestLogging, TestLoggingMacrosInvalidLoggerInstalled) {
             virtual ~FakeModule() {}
 
             ModuleUUID getUUID() const override {
-                return ILogger::TypeUUID;
+                return aw::base::logging::ILogger::TypeUUID;
             }
     };
 
@@ -50,8 +49,8 @@ TEST(TestLogging, TestLoggingMacrosInvalidLoggerInstalled) {
 TEST(TestLogging, TestLogMacros) {
 
     // Register a mock-logger.
-    auto mockLogger(std::make_shared<MockILogger>());
-    EXPECT_CALL(*mockLogger, getUUID()).WillRepeatedly(Return(ILogger::TypeUUID));
+    auto mockLogger(std::make_shared<aw::base::logging::MockILogger>());
+    EXPECT_CALL(*mockLogger, getUUID()).WillRepeatedly(Return(aw::base::logging::ILogger::TypeUUID));
 
     auto moduleProvider(ModuleProvider::getInstance());
     moduleProvider->addModule(mockLogger);
@@ -59,16 +58,16 @@ TEST(TestLogging, TestLogMacros) {
     // Check all macros / levels.
     testing::InSequence seq;
 
-    EXPECT_CALL(*mockLogger, log(testing::Eq(LogLevel::LOG_LEVEL_ERROR), testing::Eq("Foo 1")));
+    EXPECT_CALL(*mockLogger, log(testing::Eq(aw::base::logging::LogLevel::LOG_LEVEL_ERROR), testing::Eq("Foo 1")));
     EXPECT_NO_THROW(LOG_ERROR("Foo ", 1));
 
-    EXPECT_CALL(*mockLogger, log(testing::Eq(LogLevel::LOG_LEVEL_INFO), testing::Eq("Bar 2")));
+    EXPECT_CALL(*mockLogger, log(testing::Eq(aw::base::logging::LogLevel::LOG_LEVEL_INFO), testing::Eq("Bar 2")));
     EXPECT_NO_THROW(LOG_INFO("Bar ", 2));
 
-    EXPECT_CALL(*mockLogger, log(testing::Eq(LogLevel::LOG_LEVEL_WARNING), testing::Eq("Hello 3")));
+    EXPECT_CALL(*mockLogger, log(testing::Eq(aw::base::logging::LogLevel::LOG_LEVEL_WARNING), testing::Eq("Hello 3")));
     EXPECT_NO_THROW(LOG_WARNING("Hello ", 3));
 
-    EXPECT_CALL(*mockLogger, log(testing::Eq(LogLevel::LOG_LEVEL_DEBUG), testing::Eq("World 4")));
+    EXPECT_CALL(*mockLogger, log(testing::Eq(aw::base::logging::LogLevel::LOG_LEVEL_DEBUG), testing::Eq("World 4")));
     EXPECT_NO_THROW(LOG_DEBUG("World ", 4));
 }
 
