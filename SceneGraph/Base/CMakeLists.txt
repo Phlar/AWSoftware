@@ -25,12 +25,51 @@ target_include_directories(${targetName}
 	PUBLIC
 		"${CMAKE_CURRENT_SOURCE_DIR}/include/public"
 	PRIVATE
-		"${CMAKE_CURRENT_SOURCE_DIR}/include/internal"
+        "${CMAKE_CURRENT_SOURCE_DIR}/include/internal"
 )
 
 target_link_libraries(${targetName} "libModule" "libLogging")
 
 setTargetCompileOptions(${targetName})
+
+#########################################################
+# The gmock target
+# Merely in order to make the target visible in an IDE.
+set(targetName_gmock "${targetName}_gmock")
+add_library(${targetName_gmock} STATIC "")
+
+target_sources(${targetName_gmock}
+	PUBLIC
+		"${CMAKE_CURRENT_SOURCE_DIR}/gmock/include/internal/scenegraph.base.internal.gmock/MockINode.hpp"
+		"${CMAKE_CURRENT_SOURCE_DIR}/gmock/src/internal/scenegraph.base.internal.gmock/MockINode.cpp"
+)
+
+# Start
+# Todo: Workaround in order to retrieve also the "private" directories....
+# In general create a gmock-helper set like for the test-creation...
+set(originalIncludeDirectories "")
+get_target_property(originalIncludeDirectories ${targetName_gmock} "INCLUDE_DIRECTORIES")
+set(adjustedIncludeDirectories ${${originalIncludeDirectories}})
+
+get_target_property(directories ${targetName} "INCLUDE_DIRECTORIES")
+foreach(directory ${directories})
+    if(directory)
+        list(APPEND adjustedIncludeDirectories "${directory}")
+    endif()
+endforeach()
+# End
+
+target_include_directories(${targetName_gmock}
+	PUBLIC
+		 "${CMAKE_CURRENT_SOURCE_DIR}/gmock/include/public/"
+         "${adjustedIncludeDirectories}"
+	PRIVATE
+         "${CMAKE_CURRENT_SOURCE_DIR}/gmock/include/internal/"
+)
+
+target_link_libraries(${targetName_gmock} gMock_static ${targetName})
+
+setTargetCompileOptions(${targetName_gmock})
 
 #########################################################
 # The library's tests.	

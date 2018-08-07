@@ -11,38 +11,38 @@ namespace scenegraph {
 namespace base {
 namespace internal {
 
-template<typename T>
-class TypedNodeOccurrence : public NodeOccurrence,
-                            public std::enable_shared_from_this<TypedNodeOccurrence<T>> {
-    public:
-
-        // Allow friendship to arbitrary typed NodeInstances.
-        template<typename U>
-        friend class NodeInstance<U>;
-
-        using TypedNodeInstancePtr = std::shared_ptr<NodeInstance<T::TInstance>>;
-
-        TypedNodeOccurrence() = delete;
-        TypedNodeOccurrence(TypedNodeInstancePtr instance)
-        : m_instance(instance) {
-            // Todo: Assert the instance.
-        }
-
-        virtual ~TypedNodeOccurrence() {
-        }
-
-        NodeInstancePtr getInstance() const {
-            return m_instance;
-        }
-
-        void accept(detail::NodeVisitorPtr& visitor) final {
-        }
-
-    protected:
-
-        NodeInstanceWeakPtr m_parent;
-        TypedNodeInstancePtr m_instance;
-};
+//template<typename T>
+//class TypedNodeOccurrence : public NodeOccurrence,
+//                            public std::enable_shared_from_this<TypedNodeOccurrence<T>> {
+//    public:
+//
+//        // Allow friendship to arbitrary typed NodeInstances.
+//        template<typename U>
+//        friend class NodeInstance<U>;
+//
+//        using TypedNodeInstancePtr = std::shared_ptr<NodeInstance<typename T::TInstance>>;
+//
+//        TypedNodeOccurrence() = delete;
+//        TypedNodeOccurrence(TypedNodeInstancePtr instance)
+//        : m_instance(instance) {
+//            // Todo: Assert the instance.
+//        }
+//
+//        virtual ~TypedNodeOccurrence() {
+//        }
+//
+//        NodeInstancePtr getInstance() const {
+//            return m_instance;
+//        }
+//
+//        void accept(detail::NodeVisitorPtr& visitor) final {
+//        }
+//
+//    protected:
+//
+//        NodeInstanceWeakPtr m_parent;
+//        TypedNodeInstancePtr m_instance;
+//};
 
 } // namespace internal
 } // namespace base
