@@ -18,7 +18,7 @@ class DerivedNodeOccurrence : public NodeOccurrence {
         virtual ~DerivedNodeOccurrence();
 
         void setParentInstanceInTest(NodeInstanceWeakPtr);
-        void accept(INodeVisitorPtr&) override;
+        void accept(INodeVisitorPtr) override;
 };
 using DerivedNodeOccurrencePtr = std::shared_ptr<DerivedNodeOccurrence>;
 
@@ -32,7 +32,7 @@ class DerivedNodeInstance : public NodeInstance {
 
         void setParentsInTest(const WeakINodeList&);
         void setChildrenInTest(const INodeList&);
-        void accept(INodeVisitorPtr&) override;
+        void accept(INodeVisitorPtr) override;
 };
 using DerivedNodeInstancePtr = std::shared_ptr<DerivedNodeInstance>;
 

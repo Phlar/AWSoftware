@@ -13,6 +13,9 @@ namespace scenegraph {
 namespace base {
 namespace internal {
 
+class MockINode;
+using MockINodePtr = std::shared_ptr<MockINode>;
+
 class MockINodeVisitor;
 using MockINodeVisitorPtr = std::shared_ptr<MockINodeVisitor>;
 
@@ -24,7 +27,7 @@ class MockINodeVisitor : public INodeVisitor {
 
         MockINodeVisitor() = default;
 
-        MOCK_METHOD1(visit, void(INodePtr&));
+        MOCK_METHOD1(visit, void(INodePtr));
 };
 
 } // namespace internal

@@ -16,6 +16,9 @@ namespace internal {
 class MockINode;
 using MockINodePtr = std::shared_ptr<MockINode>;
 
+class MockINodeVisitor;
+using MockINodeVisitorPtr = std::shared_ptr<MockINodeVisitor>;
+
 class MockINode : public INode {
 
     public:
@@ -25,7 +28,7 @@ class MockINode : public INode {
         MockINode() = default;
         virtual ~MockINode() = default;
 
-        MOCK_METHOD1(accept, void(INodeVisitorPtr&));
+        MOCK_METHOD1(accept, void(INodeVisitorPtr));
 };
 
 } // namespace internal

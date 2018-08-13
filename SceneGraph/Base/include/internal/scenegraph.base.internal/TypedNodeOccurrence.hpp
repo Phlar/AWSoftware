@@ -23,7 +23,7 @@ class TypedNodeOccurrence : public NodeOccurrence,
         template<typename U>
         friend class TypedNodeInstance;
 
-        using TypedNodeInstancePtr = std::shared_ptr<TypedNodeInstance<typename T::TInstance>>;
+        using TypedNodeInstancePtr = std::shared_ptr<TypedNodeInstance<T>>;
 
         TypedNodeOccurrence() = delete;
         TypedNodeOccurrence(TypedNodeInstancePtr instance)
@@ -38,14 +38,13 @@ class TypedNodeOccurrence : public NodeOccurrence,
             return m_instance;
         }
 
-        void accept(INodeVisitorPtr& visitor) final {
-            // Todo: Assert the visitor.
+        void accept(INodeVisitorPtr visitor) final {
+            ASSERT(visitor, "Error applying visitor to node-instance, invalid visitor-object provided.");
             visitor->visit(shared_from_this());
         }
 
     protected:
 
-        NodeInstanceWeakPtr m_parent;
         TypedNodeInstancePtr m_instance;
 };
 

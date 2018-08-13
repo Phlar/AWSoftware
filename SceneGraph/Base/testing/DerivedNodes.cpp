@@ -18,7 +18,7 @@ void DerivedNodeOccurrence::setParentInstanceInTest(NodeInstanceWeakPtr instance
     m_parent = instance;
 }
 
-void DerivedNodeOccurrence::accept(INodeVisitorPtr&) {
+void DerivedNodeOccurrence::accept(INodeVisitorPtr) {
 }
 
 
@@ -38,7 +38,7 @@ void DerivedNodeInstance::setChildrenInTest(const INodeList& children) {
     m_children = children;
 }
 
-void DerivedNodeInstance::accept(INodeVisitorPtr&) {
+void DerivedNodeInstance::accept(INodeVisitorPtr) {
 }
 
 } // namespace internal

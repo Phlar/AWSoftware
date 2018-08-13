@@ -41,7 +41,9 @@ add_library(${targetName_gmock} STATIC "")
 target_sources(${targetName_gmock}
 	PUBLIC
 		"${CMAKE_CURRENT_SOURCE_DIR}/gmock/include/internal/scenegraph.base.internal.gmock/MockINode.hpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/gmock/include/internal/scenegraph.base.internal.gmock/MockINodeVisitor.hpp"
 		"${CMAKE_CURRENT_SOURCE_DIR}/gmock/src/internal/scenegraph.base.internal.gmock/MockINode.cpp"
+        "${CMAKE_CURRENT_SOURCE_DIR}/gmock/src/internal/scenegraph.base.internal.gmock/MockINodeVisitor.cpp"
 )
 
 # Start

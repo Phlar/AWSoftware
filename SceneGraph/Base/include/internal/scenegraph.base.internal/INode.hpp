@@ -19,7 +19,7 @@ class INode {
 
         virtual ~INode() = default;
 
-        virtual void accept(INodeVisitorPtr&) = 0;
+        virtual void accept(INodeVisitorPtr) = 0;
 };
 
 using INodePtr = std::shared_ptr<INode>;
