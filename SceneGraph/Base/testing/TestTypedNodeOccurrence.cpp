@@ -8,27 +8,19 @@
 #include "scenegraph.base.internal/TypedNodeInstance.hpp"
 #include "scenegraph.base.internal/TypedNodeOccurrence.hpp"
 
+#include "FakeTestNodes.hpp"
+
 
 using namespace testing;
 using namespace aw::scenegraph::base::internal;
 
-struct TestInstance {
-};
-
-struct TestOccurrence {
-};
-
-struct TestTrait {
-    using TInstance = TestInstance;
-    using TOccurrence = TestOccurrence;
-};
 
 class TestTypedNodeOccurrenceFixture : public testing::Test {
 
     public:
 
         TestTypedNodeOccurrenceFixture()
-        : typedNodeInstance(nullptr) {
+        : testInstance(nullptr) {
         }
 
         virtual ~TestTypedNodeOccurrenceFixture() {
@@ -36,49 +28,49 @@ class TestTypedNodeOccurrenceFixture : public testing::Test {
 
         void SetUp() override {
 
-            ASSERT_NO_THROW(typedNodeInstance = std::make_shared<TypedNodeInstance<TestTrait>>());
+            ASSERT_NO_THROW(testInstance = std::make_shared<FakeTestInstance>());
         }
 
-        std::shared_ptr<TypedNodeInstance<TestTrait>> typedNodeInstance;
+        FakeTestInstancePtr testInstance;
 };
 
 
 TEST(TestTypedNodeOccurrence, TestConstructionInvalidParameters) {
-    EXPECT_ANY_THROW(TypedNodeOccurrence<TestTrait>(nullptr));
+    EXPECT_ANY_THROW(FakeTestOccurrence(nullptr));
 }
 
 TEST_F(TestTypedNodeOccurrenceFixture, TestConstruction) {
 
-    std::shared_ptr<TypedNodeOccurrence<TestTrait>> typedNodeOccurrence;
-    EXPECT_NO_THROW(typedNodeOccurrence = std::make_shared<TypedNodeOccurrence<TestTrait>>(typedNodeInstance));
+    FakeTestOccurrencePtr testOccurrence;
+    EXPECT_NO_THROW(testOccurrence = std::make_shared<FakeTestOccurrence>(testInstance));
 }
 
 TEST_F(TestTypedNodeOccurrenceFixture, TestGetInstance) {
 
-    std::shared_ptr<TypedNodeOccurrence<TestTrait>> typedNodeOccurrence;
-    ASSERT_NO_THROW(typedNodeOccurrence = std::make_shared<TypedNodeOccurrence<TestTrait>>(typedNodeInstance));
+    FakeTestOccurrencePtr testOccurrence;
+    ASSERT_NO_THROW(testOccurrence = std::make_shared<FakeTestOccurrence>(testInstance));
 
-    NodeInstancePtr instance;
-    EXPECT_NO_THROW(instance = typedNodeOccurrence->getInstance());
-    EXPECT_EQ(typedNodeInstance, instance);
+    FakeTestInstancePtr instance;
+    EXPECT_NO_THROW(instance = testOccurrence->getInstance());
+    EXPECT_EQ(testInstance, instance);
 }
 
 TEST_F(TestTypedNodeOccurrenceFixture, TestApplyInvalidVisitorShouldThrow) {
 
-    std::shared_ptr<TypedNodeOccurrence<TestTrait>> typedNodeOccurrence;
-    ASSERT_NO_THROW(typedNodeOccurrence = std::make_shared<TypedNodeOccurrence<TestTrait>>(typedNodeInstance));
+    FakeTestOccurrencePtr testOccurrence;
+    ASSERT_NO_THROW(testOccurrence = std::make_shared<FakeTestOccurrence>(testInstance));
 
-    EXPECT_ANY_THROW(typedNodeOccurrence->accept(nullptr));
+    EXPECT_ANY_THROW(testOccurrence->accept(nullptr));
 }
 
 TEST_F(TestTypedNodeOccurrenceFixture, TestApplyVisitor) {
 
-    std::shared_ptr<TypedNodeOccurrence<TestTrait>> typedNodeOccurrence;
-    ASSERT_NO_THROW(typedNodeOccurrence = std::make_shared<TypedNodeOccurrence<TestTrait>>(typedNodeInstance));
+    FakeTestOccurrencePtr testOccurrence;
+    ASSERT_NO_THROW(testOccurrence = std::make_shared<FakeTestOccurrence>(testInstance));
 
     MockINodeVisitorPtr mockINodeVisitor(MockINodeVisitor::create());
-    EXPECT_CALL(*mockINodeVisitor, visit(Eq(typedNodeOccurrence)));
-    EXPECT_NO_THROW(typedNodeOccurrence->accept(mockINodeVisitor));
+    EXPECT_CALL(*mockINodeVisitor, visit(Eq(testOccurrence)));
+    EXPECT_NO_THROW(testOccurrence->accept(mockINodeVisitor));
 }
 
 int main(int argc, char **argv) {

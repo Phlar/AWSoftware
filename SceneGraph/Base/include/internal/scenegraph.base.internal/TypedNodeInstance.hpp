@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include "base.common/Assert.hpp"
+
 #include "scenegraph.base.internal/NodeInstance.hpp"
 #include "scenegraph.base.internal/TypedNodeOccurrence.hpp"
 
@@ -18,9 +20,10 @@ class TypedNodeInstance : public NodeInstance,
 
     public:
 
-        using TypedNodeInstancePtr = std::shared_ptr<TypedNodeInstance<typename T::TInstance>>;
-        using TypedNodeOccurrencePtr = std::shared_ptr<TypedNodeOccurrence<typename T::TOccurrence>>;
-        using TypedNodeOccurrenceWeakPtr = std::weak_ptr<TypedNodeOccurrence<typename T::TOccurrence>>;
+        using TypedNodeInstancePtr = std::shared_ptr<typename T::TInstance>;
+        using TypedNodeOccurrencePtr = std::shared_ptr<typename T::TOccurrence>;
+        using TypedNodeOccurrenceWeakPtr = std::weak_ptr<typename T::TOccurrence>;
+        using TypedNodeOccurrenceList = std::list<TypedNodeOccurrencePtr>;
 
         TypedNodeInstance() {
         }
@@ -28,23 +31,27 @@ class TypedNodeInstance : public NodeInstance,
         virtual ~TypedNodeInstance() {
         }
 
-        TypedNodeInstancePtr createClone() {
-            return (static_cast<T*>(this))->createClone();
-        }
-
         TypedNodeOccurrencePtr createOccurrence() {
 
-            m_occurrences.push_back(NodeOccurrenceWeakPtr(NodeOccurrencePtr(nullptr)));
+            m_occurrences.push_back(TypedNodeOccurrenceWeakPtr(TypedNodeOccurrencePtr(nullptr)));
             auto iter = std::prev(m_occurrences.end()); // With C++14 at hand this becomes obsolete due to lambda init-captures.
-            auto occurrence = NodeOccurrencePtr(
-                new NodeOccurrence<T>(shared_from_this()),
-                [this, iter](NodeOccurrence<T>* rawOccurrence) {
+            auto occurrence = TypedNodeOccurrencePtr(
+                new typename T::TOccurrence(std::static_pointer_cast<typename T::TInstance>(shared_from_this())),
+                [this, iter](T::TOccurrence* rawOccurrence) {
                     m_occurrences.erase(iter);
                     delete rawOccurrence;
                 }
             );
             *iter = occurrence;
             return occurrence;
+        }
+
+        TypedNodeOccurrenceList getOccurrences() const {
+            TypedNodeOccurrenceList result;
+            std::transform(m_occurrences.begin(), m_occurrences.end(), std::back_inserter(result), [](TypedNodeOccurrenceWeakPtr node) {
+                return node.lock();
+            });
+            return result;
         }
 
         void addChild(NodeOccurrencePtr occurrence /*boost::optional<std::size_t> position*/) {
@@ -78,10 +85,11 @@ class TypedNodeInstance : public NodeInstance,
         }
 
         void accept(INodeVisitorPtr visitor) final {
+            ASSERT(visitor, "Error applying visitor to node-occurrence, invalid visitor-object provided.");
             visitor->visit(shared_from_this());
         }
 
-    protected:
+    private:
 
         bool checkAddingNodeAsChildCausesCycle(INodePtr node) const {
 
@@ -96,9 +104,8 @@ class TypedNodeInstance : public NodeInstance,
             return true;
         }
 
-        using WeakNodeOccurrenceList = std::list<NodeOccurrenceWeakPtr>;
-
-        WeakNodeOccurrenceList m_occurrences; // Do not alter this to a container that invalidates its iterators when inserting / removing elements!
+        using WeakTypedNodeOccurrenceList = std::list<TypedNodeOccurrenceWeakPtr>;
+        WeakTypedNodeOccurrenceList m_occurrences; // Do not alter this to a container that invalidates its iterators when inserting / removing elements!
 };
 
 } // namespace internal

@@ -23,7 +23,7 @@ class TypedNodeOccurrence : public NodeOccurrence,
         template<typename U>
         friend class TypedNodeInstance;
 
-        using TypedNodeInstancePtr = std::shared_ptr<TypedNodeInstance<T>>;
+        using TypedNodeInstancePtr = std::shared_ptr<typename T::TInstance>;
 
         TypedNodeOccurrence() = delete;
         TypedNodeOccurrence(TypedNodeInstancePtr instance)
@@ -34,7 +34,7 @@ class TypedNodeOccurrence : public NodeOccurrence,
         virtual ~TypedNodeOccurrence() {
         }
 
-        NodeInstancePtr getInstance() const {
+        TypedNodeInstancePtr getInstance() const {
             return m_instance;
         }
 
@@ -43,7 +43,7 @@ class TypedNodeOccurrence : public NodeOccurrence,
             visitor->visit(shared_from_this());
         }
 
-    protected:
+    private:
 
         TypedNodeInstancePtr m_instance;
 };

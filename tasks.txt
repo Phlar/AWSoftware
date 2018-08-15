@@ -12,4 +12,6 @@
     - conversion of instances to occurrence when adding as a reference.
     - algorithms / traversers / all paths up to the root.
     - preparation of visitor support.
+    - consider making currently public methods of NodeInstance, NodeOccurrence, TypedNodeInstance, TypedNodeOccurrence
+      not visible to derived classes any more - protected and their members private.
 - Target's shall take the parental's directory name into accout. e.g. instead of libCommon -> libBaseCommon

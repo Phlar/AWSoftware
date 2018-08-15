@@ -3,6 +3,8 @@
 
 #include "scenegraph.base.internal/NodeInstance.hpp"
 #include "scenegraph.base.internal/NodeOccurrence.hpp"
+#include "scenegraph.base.internal/TypedNodeInstance.hpp"
+#include "scenegraph.base.internal/TypedNodeOccurrence.hpp"
 
 
 namespace aw {
